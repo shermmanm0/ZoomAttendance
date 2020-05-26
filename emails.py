@@ -1,22 +1,7 @@
 import csv
 import shelve
 shelfFile = shelve.open('data')
-class_meetings = shelfFile['class_meetings']
-emailfile = open('studenttoemail.csv')
-reader = csv.reader(emailfile)
-data = list(reader)
-name_to_email_dict = {}
-for x in data:
-  name_to_email_dict[x[0]]=x[1]
-#print(name_to_email_dict)
-
-
-for meeting in class_meetings:
-  meeting["students"]=[]
-  for participant in meeting["participants"]:
-    if participant["name"] in name_to_email_dict:
-      participant["user_email"]=name_to_email_dict[participant["name"]]
-      meeting["students"].append(participant)
-shelfFile["class_meetings"] = class_meetings
+student_emails = ["dbradby@cristoreyrichmond.org","jbrockenbrough@cristoreyrichmond.org","cdavis@cristoreyrichmond.org","amoreira@cristoreyrichmond.org","grivera@cristoreyrichmond.org","mbruce@cristoreyrichmond.org","kfreeman@cristoreyrichmond.org","dgaines@cristoreyrichmond.org","eshort@cristoreyrichmond.org","cgutierrez@cristoreyrichmond.org","jleon@cristoreyrichmond.org","elizama@cristoreyrichmond.org","oramirez@cristoreyrichmond.org","vrodriguezcruz@cristoreyrichmond.org","jjoneshardy@cristoreyrichmond.org","kkellyhumphreys@cristoreyrichmond.org","qlambert@cristoreyrichmond.org","aoscott@cristoreyrichmond.org","tbillie@cristoreyrichmond.org","scarter@cristoreyrichmond.org","ievans@cristoreyrichmond.org","jroberts@cristoreyrichmond.org","dmccloud@cristoreyrichmond.org","mpalacios@cristoreyrichmond.org","opalacios@cristoreyrichmond.org","mwalker@cristoreyrichmond.org","samezquita@cristoreyrichmond.org","gasuncion@cristoreyrichmond.org","kcastilllo@cristoreyrichmond.org","rraqui@cristoreyrichmond.org","eruizluna@cristoreyrichmond.org","tcurtis@cristoreyrichmond.org","dfleming@cristoreyrichmond.org","amscott@cristoreyrichmond.org","mwinfield@cristoreyrichmond.org","aaguilar@cristoreyrichmond.org","aalbornoz@cristoreyrichmond.org","darriaga@cristoreyrichmond.org","ecolon@cristoreyrichmond.org","fmora@cristoreyrichmond.org","rarias@cristoreyrichmond.org","madjohnson@cristoreyrichmond.org","mahjohnson@cristoreyrichmond.org","llewis@cristoreyrichmond.org","ecarrazco@cristoreyrichmond.org","tcoleswilliams@cristoreyrichmond.org","qdillard@cristoreyrichmond.org","aherring@cristoreyrichmond.org","kkersey@cristoreyrichmond.org","kbatts@cristoreyrichmond.org","tdillard@cristoreyrichmond.org","kmoore@cristoreyrichmond.org","awalker@cristoreyrichmond.org","agarcia@cristoreyrichmond.org","bhernandez@cristoreyrichmond.org","xhernandez@cristoreyrichmond.org","amartinez@cristoreyrichmond.org","socando@cristoreyrichmond.org","jramirez@cristoreyrichmond.org","abrooks@cristoreyrichmond.org","jdavidson@cristoreyrichmond.org","mturner@cristoreyrichmond.org","evargas@cristoreyrichmond.org","jhughes@cristoreyrichmond.org","cjones@cristoreyrichmond.org","rpayne@cristoreyrichmond.org","ataylor@cristoreyrichmond.org","xbouldin@cristoreyrichmond.org","cforney@cristoreyrichmond.org","rjohnson@cristoreyrichmond.org","drichardson@cristoreyrichmond.org","aarrington@cristoreyrichmond.org","lphillips@cristoreyrichmond.org","aruss@cristoreyrichmond.org","twallacepettus@cristoreyrichmond.org","gchavarria@cristoreyrichmond.org","njordan@cristoreyrichmond.org","aplummer@cristoreyrichmond.org","brosales@cristoreyrichmond.org","cbrown@cristoreyrichmond.org","mlewis@cristoreyrichmond.org","ayrustin@cristoreyrichmond.org","arrustin@cristoreyrichmond.org","jfajardo@cristoreyrichmond.org","xluis@cristoreyrichmond.org","smartinez@cristoreyrichmond.org","hsancheztzompaxtle@cristoreyrichmond.org","asantos@cristoreyrichmond.org"]
+shelfFile["emails"] = student_emails
 shelfFile.close()
 

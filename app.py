@@ -6,6 +6,8 @@ import ezsheets
 import shelve
 from datetime import datetime
 from dateutil import tz
+import base64
+import urllib.parse
 from_zone = tz.gettz('UTC')
 to_zone = tz.gettz('America/New_York')
 def get_student_email_dict():
@@ -22,6 +24,8 @@ def zoom_request(url_start,return_key,id="",url_end=""):
   'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6IkdseERhTERGUnMyMy1BZ3VjdTFWbHciLCJleHAiOjE1OTIwMjA4MDAsImlhdCI6MTU4OTM1MzYzOX0.32bYFaKf9ya2JrjXtw1PzNq743YWEb0Td8uorVNUhMM',
   'Cookie': 'cred=C0C3C2AA81636EA325387F12F9BF2679'
   }
+  if id.startswith("/"):
+        id = urllib.parse.quote(urllib.parse.quote(id,safe=''))
   url = url_start+str(id)+url_end
   conn = http.client.HTTPSConnection("api.zoom.us")
   payload = ''
@@ -69,29 +73,21 @@ teachers = get_teachers()
 meetings = []
 sheet_titles = []
 text_file = open("students.txt","w")
-ss = ezsheets.Spreadsheet('1K-KFYMPQuSz5Tnns-YQJ8KD5jS57cMqvom5cg5qDxOk')
 for teacher in teachers:
   meetings=meetings+get_teachers_meetings(teacher['id'])
+class_meetings = []
 for meeting in meetings:
-  if meeting["topic"].strip() in course_names:
-    meeting["course"]=course_names[meeting["topic"].strip()]
+  if meeting["id"] in [705711667,725466437,989085360,466594717,741411187,912495440,281881346,92113197187,98615995297,385903335,911346592,385903335,687867634]:
     meeting["date"]=(convertTime(meeting["start_time"]))
-    meeting["file_name"]=meeting["user_email"]+" "+meeting["course"]+" "+meeting["date"]
-    meeting["participants"] = get_meeting_participants(meeting["id"])
-    sheet_titles.append(meeting['user_email']+'\t'+str(meeting['id']))
-    """ss.createSheet(meeting["file_name"])
-    sheet = ss[meeting["file_name"]]
-    row = 1
-    sheet.updateRow(row,["Name","Email","Duration"])
-    row +=1
-    for student in meeting['participants']:
-      if student['name'] in student_to_email:
-        student['email'] = student_to_email[student['name']]
-        sheet_line = [student['name'],student['email'],student['duration']]
-        sheet.updateRow(row,sheet_line)
-        row+=1
-"""
+    meeting["participants"] = get_meeting_participants(meeting["uuid"])
+    class_meetings.append(meeting)
+students = []
+for x in class_meetings:
+  for y in x['participants']:
+    students.append(y)
+
 
 shelfFile = shelve.open("data")
-shelfFile['meetings'] = meetings
+shelfFile['class_meetings'] = class_meetings
+shelfFile['students']=unique(students)
 shelfFile.close()

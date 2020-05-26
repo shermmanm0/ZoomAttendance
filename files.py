@@ -4,28 +4,20 @@ import ezsheets
 import csv
 import shelve
 shelfFile = shelve.open('data')
-class_meetings = shelfFile['class_meetings']
+class_meetings = shelfFile['allmeetings']
 path = os.path.dirname(os.path.abspath(__file__))+"/meeting_csvs/"
 os.chdir(path)
-for x in class_meetings[0]['students']:
-    print(x)
-"""
+headers = []
+for x in class_meetings[0]["participants"]:
+    headers.append(x)
 
-
-
-files = os.listdir()
-ss = ezsheets.Spreadsheet('1K-KFYMPQuSz5Tnns-YQJ8KD5jS57cMqvom5cg5qDxOk')
-
-
-
-
-for file in files:
-    file_data = open(path+file)
-    file_reader = csv.reader(file_data)
-    file_array = list(file_reader)
-    ss.createSheet(file)
-    sheet = ss[file]
-    sheet.updateRows(file_array)
-
-shelfFile["class_meetings"]=class_meetings
-shelfFile.close()"""
+output_file = open("attendance_data2.csv","w",newline="")
+writer = csv.writer(output_file)
+writer.writerow(["course","date","host"]+headers)
+for cm in class_meetings:
+    for student in cm["participants"]:
+        row = [cm["topic"],cm["date"],cm["user_email"]]
+        for x in student:
+            row.append(student[x])
+        writer.writerow(row)
+output_file.close()
